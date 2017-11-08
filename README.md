@@ -15,6 +15,8 @@ It uses a special attribute within the `$CFG` configuration variable: `$CFG->CON
  * Mandatory fields:
   * `name`
   * `datatype`
+* `auth_enable` is an `array` of authentication plugins (without `auth/` nor `auth_` prefixes) that need to be forcibly *enabled*
+* `auth_disable` is an `array` of authentication plugins (without `auth/` nor `auth_` prefixes) that need to be forcibly *disabled*
 
 
 # `config.php` example
@@ -50,4 +52,6 @@ $CFG->CONFSEED->user_info_fields = array(
     'param2' => 512, // Maximum length.
   ),
 );
+$CFG->CONFSEED->auth_enable = ['cas', ];
+$CFG->CONFSEED->auth_disable = ['email', ];
 ```

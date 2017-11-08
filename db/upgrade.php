@@ -108,6 +108,17 @@ function xmldb_local_confseed_upgrade($oldversion) {
         profile_reorder_fields();
     }
 
+    // Make sure certain auth plugins are _disabled_ or _enabled_.
+    // Do not touch those that aren't in either.
+    $auths = explode(',', get_config('core', 'auth'));
+    if ($CFG->CONFSEED->auth_enable) {
+        $auths = array_merge($auths, (array) $CFG->CONFSEED->auth_enable);
+    }
+    if ($CFG->CONFSEED->auth_disable) {
+        $auths = array_diff($auths, (array) $CFG->CONFSEED->auth_disable);
+    }
+    set_config('auth', implode(',', $auths));
+
     // An upgrade_plugin_savepoint call is not needed here as upgradelib.php's upgrade_plugins() will do it for us.
     return true;
 }
