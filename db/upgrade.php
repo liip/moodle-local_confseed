@@ -119,6 +119,13 @@ function xmldb_local_confseed_upgrade($oldversion) {
     }
     set_config('auth', implode(',', $auths));
 
+    // Forcibly set some settings.
+    if (isset($CFG->CONFSEED->settings) ) {
+        foreach ($CFG->CONFSEED->settings as $key => $value) {
+            set_config($key, (string) $value);
+        }
+    }
+
     // An upgrade_plugin_savepoint call is not needed here as upgradelib.php's upgrade_plugins() will do it for us.
     return true;
 }

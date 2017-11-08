@@ -7,6 +7,7 @@ This plugin allows the automated setup of various configurations that are usuall
 It uses a special attribute within the `$CFG` configuration variable: `$CFG->CONFSEED`, which is a `stdClass` in which attributes can be set to be enforced at upgrade time:
 
 * `version` This will be used as the `local/confseed` plugin version. Only changes to that field will trigger new configuration enforcements.
+* `settings` is an `array` whose keys are the `$CFG->` settings that need to be set to the provided values
 * `user_info_categories` is an `array` of `stdClass` `$DB` descriptors for the `{user_info_category}` database table, *which keys are codename for the below `user_info_fields`*.
  * Mandatory fields:
   * `id`
@@ -21,10 +22,13 @@ It uses a special attribute within the `$CFG` configuration variable: `$CFG->CON
 
 # `config.php` example
 ```php
-
 $CFG->CONFSEED = new stdClass();
 $CFG->CONFSEED->version = 2017110800;
-// Create user profile categories
+// Set some values.
+$CFG->CONFSEED->settings = array(
+  'theme' => 'boost',
+);
+// Create user profile categories.
 $CFG->CONFSEED->user_info_categories = array(
   'food' => (object) array(
     'id' => 1,
@@ -33,7 +37,7 @@ $CFG->CONFSEED->user_info_categories = array(
   ),
 );
 
-// Create user profile fields
+// Create user profile fields.
 $CFG->CONFSEED->user_info_fields = array(
   'meat' => (object) array(
     'category' => 'food',
@@ -52,6 +56,7 @@ $CFG->CONFSEED->user_info_fields = array(
     'param2' => 512, // Maximum length.
   ),
 );
+// Enable or disable certain authentications.
 $CFG->CONFSEED->auth_enable = ['cas', ];
 $CFG->CONFSEED->auth_disable = ['email', ];
 ```
