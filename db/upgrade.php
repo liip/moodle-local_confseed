@@ -42,16 +42,17 @@ function xmldb_local_confseed_upgrade($oldversion) {
         return true;
     }
 
+    // Holds the codename-to-ID map
+    $categorycodemap = array();
+
     // Create or update user profile categories.
     if (isset($CFG->CONFSEED->user_info_categories)) {
         $catsortorder = 1; // Start at 2, as the default one has 1.
-        foreach ($CFG->CONFSEED->user_info_categories as $id => $newcategory) {
-            if (!isset($newcategory->name)) {
+        foreach ($CFG->CONFSEED->user_info_categories as $codename => $newcategory) {
+            if (!isset($newcategory->id) ||
+                !isset($newcategory->name)) {
                 continue;
-            }
-            // Force it it. The array key is the id.
-            $newcategory->id = $id;
-
+            };
             if (!isset($newcategory->sortorder)) {
                 // Order them as they come.
                 $newcategory->sortorder = $catsortorder++;
@@ -61,8 +62,10 @@ function xmldb_local_confseed_upgrade($oldversion) {
             if ($dbcategory) {
                 // We'll just override this category.
                 $DB->update_record('user_info_category', $newcategory);
+                $categorycodemap[$codename] = $newcategory->id;
             } else {
-                $DB->insert_record('user_info_category', $newcategory);
+                $recordid = $DB->insert_record('user_info_category', $newcategory);
+                $categorycodemap[$codename] = $recordid;
             }
         }
         profile_reorder_categories();
@@ -79,8 +82,12 @@ function xmldb_local_confseed_upgrade($oldversion) {
             // Force it it. The array key is the shortname.
             $newfield->shortname = $shortname;
 
-            if (!isset($newfield->categoryid)) {
-                $newfield->categoryid = 1; // Force-put them in the default category.
+            // Allow using a codename as ID, for coherence.
+            if (isset($newfield->category) && array_key_exists($newfield->category, $categorycodemap)) {
+                $newfield->categoryid = $categorycodemap[$newfield->category];
+            } else if (!isset($newfield->categoryid)) {
+                // Otherwise force-put them in the default category.
+                $newfield->categoryid = 1;
             }
             if (!isset($newfield->visible)) {
                 $newfield->visible = PROFILE_VISIBLE_PRIVATE; // Force-set visibility to 'Visible to user'
