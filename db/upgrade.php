@@ -48,6 +48,7 @@ function xmldb_local_confseed_upgrade($oldversion) {
                 !isset($newfield->datatype)) {
                 continue;
             }
+            $newfield->categoryid = 1; // Force-put them in the default category.
             $dbfield = $DB->get_record('user_info_field', array('shortname' => $newfield->shortname));
             if ($dbfield) {
                 // We'll just override this field.
