@@ -33,6 +33,32 @@ defined('MOODLE_INTERNAL') || die();
 function xmldb_local_confseed_upgrade($oldversion) {
     global $CFG, $DB;
 
+    if (!isset($CFG->CONFSEED)) {
+        // The $CFG->CONFSEED attribute is not set, local/confseed doesn't do anything.
+        return true;
+    }
+
+    // Create or update user profile fields.
+    if (isset($CFG->CONFSEED->user_info_fields)) {
+        require_once($CFG->dirroot . '/user/profile/definelib.php');
+        foreach ($CFG->CONFSEED->user_info_fields as $newfield) {
+            if (!isset($newfield->shortname) ||
+                !isset($newfield->name) ||
+                !isset($newfield->datatype)) {
+                continue;
+            }
+            $dbfield = $DB->get_record('user_info_field', array('shortname' => $newfield->shortname));
+            if ($dbfield) {
+                // We'll just override this field.
+                $newfield->id = $dbfield->id;
+                $DB->update_record('user_info_field', $newfield);
+            } else {
+                $DB->insert_record('user_info_field', $newfield);
+            }
+            profile_reorder_fields();
+            profile_reorder_categories();
+        }
+    }
 
     // An upgrade_plugin_savepoint call is not needed here as upgradelib.php's upgrade_plugins() will do it for us.
     return true;
