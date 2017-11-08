@@ -27,6 +27,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/user/profile/definelib.php');
+require_once($CFG->dirroot . '/user/profile/lib.php');
 
 /**
  * Function launched when local_confseed upgrades.
@@ -80,6 +81,9 @@ function xmldb_local_confseed_upgrade($oldversion) {
 
             if (!isset($newfield->categoryid)) {
                 $newfield->categoryid = 1; // Force-put them in the default category.
+            }
+            if (!isset($newfield->visible)) {
+                $newfield->visible = PROFILE_VISIBLE_PRIVATE; // Force-set visibility to 'Visible to user'
             }
             if (!isset($newfield->sortorder)) {
                 // Order them as they come.
