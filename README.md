@@ -8,6 +8,7 @@ It uses a special attribute within the `$CFG` configuration variable: `$CFG->CON
 
 * `version` This will be used as the `local/confseed` plugin version. Only changes to that field will trigger new configuration enforcements.
 * `user_info_fields` is an `array` of `stdClass` `$DB` descriptors for the `{user_info_field}` database table; please refer to {{user/profile/field/*/define.class.php` for the various attributes' usages.
-** `shortname` is mandatory
-** `name` is mandatory
-** `datatype` is mandatory
+ * Mandatory fields:
+  * `shortname`
+  * `name`
+  * `datatype`
