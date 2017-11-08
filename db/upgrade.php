@@ -43,12 +43,18 @@ function xmldb_local_confseed_upgrade($oldversion) {
 
     // Create or update user profile categories.
     if (isset($CFG->CONFSEED->user_info_categories)) {
+        $catsortorder = 1; // Start at 2, as the default one has 1.
         foreach ($CFG->CONFSEED->user_info_categories as $id => $newcategory) {
             if (!isset($newcategory->name)) {
                 continue;
             }
             // Force it it. The array key is the id.
             $newcategory->id = $id;
+
+            if (!isset($newcategory->sortorder)) {
+                // Order them as they come.
+                $newcategory->sortorder = $catsortorder++;
+            }
 
             $dbcategory = $DB->get_record('user_info_category', array('id' => $newcategory->id));
             if ($dbcategory) {
@@ -63,6 +69,7 @@ function xmldb_local_confseed_upgrade($oldversion) {
 
     // Create or update user profile fields.
     if (isset($CFG->CONFSEED->user_info_fields)) {
+        $fieldsortorder = 1; // Start at 2, as the default one has 1.
         foreach ($CFG->CONFSEED->user_info_fields as $shortname => $newfield) {
             if (!isset($newfield->name) ||
                 !isset($newfield->datatype)) {
@@ -73,6 +80,10 @@ function xmldb_local_confseed_upgrade($oldversion) {
 
             if (!isset($newfield->categoryid)) {
                 $newfield->categoryid = 1; // Force-put them in the default category.
+            }
+            if (!isset($newfield->sortorder)) {
+                // Order them as they come.
+                $newfield->sortorder = $fieldsortorder++;
             }
             $dbfield = $DB->get_record('user_info_field', array('shortname' => $newfield->shortname));
             if ($dbfield) {
