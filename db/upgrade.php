@@ -42,7 +42,7 @@ function xmldb_local_confseed_upgrade($oldversion) {
         return true;
     }
 
-    // Holds the codename-to-ID map
+    // Holds the codename-to-ID map.
     $categorycodemap = array();
 
     // Create or update user profile categories.
@@ -90,7 +90,7 @@ function xmldb_local_confseed_upgrade($oldversion) {
                 $newfield->categoryid = 1;
             }
             if (!isset($newfield->visible)) {
-                $newfield->visible = PROFILE_VISIBLE_PRIVATE; // Force-set visibility to 'Visible to user'
+                $newfield->visible = PROFILE_VISIBLE_PRIVATE; // Force-set visibility to 'Visible to user'.
             }
             if (!isset($newfield->sortorder)) {
                 // Order them as they come.
