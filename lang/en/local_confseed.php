@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Configuration Seeder version
+ * Configuration Seeder scripts
  *
  * @package local
  * @subpackage confseed
@@ -24,9 +24,5 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
-$plugin->version   = (isset($CFG->CONFSEED) && isset($CFG->CONFSEED->version)) ? $CFG->CONFSEED->version : '2017110700';
-$plugin->requires  = 2017051502; // Requires Moodle 3.3.
-$plugin->component = 'local_confseed';
+$string['pluginname'] = 'Configuration Seeder';
 
