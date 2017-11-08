@@ -26,6 +26,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+require_once($CFG->dirroot . '/user/profile/definelib.php');
+
 /**
  * Function launched when local_confseed upgrades.
  * @param int $oldversion the version we are upgrading from
@@ -37,6 +39,25 @@ function xmldb_local_confseed_upgrade($oldversion) {
     if (!isset($CFG->CONFSEED)) {
         // The $CFG->CONFSEED attribute is not set, local/confseed doesn't do anything.
         return true;
+    }
+
+    // Create or update user profile categories.
+    if (isset($CFG->CONFSEED->user_info_categories)) {
+        foreach ($CFG->CONFSEED->user_info_categories as $newcategory) {
+            if (!isset($newfield->id) ||
+                !isset($newfield->name)) {
+                continue;
+            }
+            $dbcategory = $DB->get_record('user_info_category', array('id' => $newcategory->id));
+            if ($dbcategory) {
+                // We'll just override this category.
+                $newcategory->id = $dbcategory->id;
+                $DB->update_record('user_info_category', $newcategory);
+            } else {
+                $DB->insert_record('user_info_category', $newcategory);
+            }
+        }
+        profile_reorder_categories();
     }
 
     // Create or update user profile fields.
@@ -59,9 +80,7 @@ function xmldb_local_confseed_upgrade($oldversion) {
                 $DB->insert_record('user_info_field', $newfield);
             }
         }
-        require_once($CFG->dirroot . '/user/profile/definelib.php');
         profile_reorder_fields();
-        profile_reorder_categories();
     }
 
     // An upgrade_plugin_savepoint call is not needed here as upgradelib.php's upgrade_plugins() will do it for us.
