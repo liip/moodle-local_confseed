@@ -69,7 +69,7 @@ function xmldb_local_confseed_upgrade($oldversion) {
                 continue;
             }
             if (!isset($newfield->categoryid)) {
-              $newfield->categoryid = 1; // Force-put them in the default category.
+                $newfield->categoryid = 1; // Force-put them in the default category.
             }
             $dbfield = $DB->get_record('user_info_field', array('shortname' => $newfield->shortname));
             if ($dbfield) {
