@@ -43,15 +43,16 @@ function xmldb_local_confseed_upgrade($oldversion) {
 
     // Create or update user profile categories.
     if (isset($CFG->CONFSEED->user_info_categories)) {
-        foreach ($CFG->CONFSEED->user_info_categories as $newcategory) {
-            if (!isset($newfield->id) ||
-                !isset($newfield->name)) {
+        foreach ($CFG->CONFSEED->user_info_categories as $id => $newcategory) {
+            if (!isset($newcategory->name)) {
                 continue;
             }
+            // Force it it. The array key is the id.
+            $newcategory->id = $id;
+
             $dbcategory = $DB->get_record('user_info_category', array('id' => $newcategory->id));
             if ($dbcategory) {
                 // We'll just override this category.
-                $newcategory->id = $dbcategory->id;
                 $DB->update_record('user_info_category', $newcategory);
             } else {
                 $DB->insert_record('user_info_category', $newcategory);
@@ -62,12 +63,14 @@ function xmldb_local_confseed_upgrade($oldversion) {
 
     // Create or update user profile fields.
     if (isset($CFG->CONFSEED->user_info_fields)) {
-        foreach ($CFG->CONFSEED->user_info_fields as $newfield) {
-            if (!isset($newfield->shortname) ||
-                !isset($newfield->name) ||
+        foreach ($CFG->CONFSEED->user_info_fields as $shortname => $newfield) {
+            if (!isset($newfield->name) ||
                 !isset($newfield->datatype)) {
                 continue;
             }
+            // Force it it. The array key is the shortname.
+            $newfield->shortname = $shortname;
+
             if (!isset($newfield->categoryid)) {
                 $newfield->categoryid = 1; // Force-put them in the default category.
             }
