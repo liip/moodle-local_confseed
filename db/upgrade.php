@@ -111,10 +111,10 @@ function xmldb_local_confseed_upgrade($oldversion) {
     // Make sure certain auth plugins are _disabled_ or _enabled_.
     // Do not touch those that aren't in either.
     $auths = explode(',', get_config('core', 'auth'));
-    if ($CFG->CONFSEED->auth_enable) {
+    if (isset($CFG->CONFSEED->auth_enable)) {
         $auths = array_merge($auths, (array) $CFG->CONFSEED->auth_enable);
     }
-    if ($CFG->CONFSEED->auth_disable) {
+    if (isset($CFG->CONFSEED->auth_disable)) {
         $auths = array_diff($auths, (array) $CFG->CONFSEED->auth_disable);
     }
     set_config('auth', implode(',', $auths));
@@ -122,10 +122,10 @@ function xmldb_local_confseed_upgrade($oldversion) {
     // Make sure certain enrol plugins are _disabled_ or _enabled_.
     // Do not touch those that aren't in either.
     $enrols = explode(',', get_config('core', 'enrol_plugins_enabled'));
-    if ($CFG->CONFSEED->enrol_enable) {
+    if (isset($CFG->CONFSEED->enrol_enable)) {
         $enrols = array_merge($enrols, (array) $CFG->CONFSEED->enrol_enable);
     }
-    if ($CFG->CONFSEED->enrol_disable) {
+    if (isset($CFG->CONFSEED->enrol_disable)) {
         $enrols = array_diff($enrols, (array) $CFG->CONFSEED->enrol_disable);
     }
     set_config('enrol_plugins_enabled', implode(',', $enrols));
