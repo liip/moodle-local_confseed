@@ -119,6 +119,17 @@ function xmldb_local_confseed_upgrade($oldversion) {
     }
     set_config('auth', implode(',', $auths));
 
+    // Make sure certain enrol plugins are _disabled_ or _enabled_.
+    // Do not touch those that aren't in either.
+    $enrols = explode(',', get_config('core', 'enrol_plugins_enabled'));
+    if ($CFG->CONFSEED->enrol_enable) {
+        $enrols = array_merge($enrols, (array) $CFG->CONFSEED->enrol_enable);
+    }
+    if ($CFG->CONFSEED->enrol_disable) {
+        $enrols = array_diff($enrols, (array) $CFG->CONFSEED->enrol_disable);
+    }
+    set_config('enrol_plugins_enabled', implode(',', $enrols));
+
     // Forcibly set some settings.
     if (isset($CFG->CONFSEED->settings) ) {
         foreach ($CFG->CONFSEED->settings as $key => $value) {

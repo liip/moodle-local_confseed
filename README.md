@@ -18,6 +18,8 @@ It uses a special attribute within the `$CFG` configuration variable: `$CFG->CON
   * `datatype`
 * `auth_enable` is an `array` of authentication plugins (without `auth/` nor `auth_` prefixes) that need to be forcibly *enabled*
 * `auth_disable` is an `array` of authentication plugins (without `auth/` nor `auth_` prefixes) that need to be forcibly *disabled*
+* `enrol_enable` is an `array` of enrolment plugins (without `enrol/` nor `enrolq_` prefixes) that need to be forcibly *enabled*
+* `enrol_disable` is an `array` of enrolment plugins (without `enrol/` nor `enrol_` prefixes) that need to be forcibly *disabled*
 
 
 # `config.php` example
@@ -59,4 +61,7 @@ $CFG->CONFSEED->user_info_fields = array(
 // Enable or disable certain authentications.
 $CFG->CONFSEED->auth_enable = ['cas', ];
 $CFG->CONFSEED->auth_disable = ['email', ];
+// Enable or disable certain enrolment methods.
+$CFG->CONFSEED->enrol_enable = ['database', ];
+$CFG->CONFSEED->enrol_disable = ['self', ];
 ```
