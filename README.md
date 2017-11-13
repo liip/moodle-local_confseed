@@ -65,3 +65,7 @@ $CFG->CONFSEED->auth_disable = ['email', ];
 $CFG->CONFSEED->enrol_enable = ['database', ];
 $CFG->CONFSEED->enrol_disable = ['self', ];
 ```
+
+# Limitations
+
+Due to Moodle Core forcibly setting the `registerauth` setting upon install, it is not possible for `local_confseed` to seed this variable upon install. It does work upon upgrade though.
