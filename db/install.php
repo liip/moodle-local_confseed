@@ -27,8 +27,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Function launched when local_confseed upgrades.
- * @param int $oldversion the version we are upgrading from
+ * Function launched when local_confseed installs.
  * @return bool result
  */
 function xmldb_local_confseed_install() {

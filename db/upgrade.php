@@ -133,7 +133,7 @@ function xmldb_local_confseed_upgrade($oldversion) {
     // Forcibly set some settings.
     if (isset($CFG->CONFSEED->settings) ) {
         foreach ($CFG->CONFSEED->settings as $key => $value) {
-            set_config($key, (string) $value);
+            set_config($key, $value);
         }
     }
 
