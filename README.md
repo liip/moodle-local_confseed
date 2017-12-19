@@ -64,6 +64,9 @@ $CFG->CONFSEED->auth_disable = ['email', ];
 // Enable or disable certain enrolment methods.
 $CFG->CONFSEED->enrol_enable = ['database', ];
 $CFG->CONFSEED->enrol_disable = ['self', ];
+// Show or hide certain activity modules.
+$CFG->CONFSEED->mod_show = ['assignment', ];
+$CFG->CONFSEED->mod_hide = ['book', ];
 ```
 
 # Limitations

@@ -26,7 +26,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = (isset($CFG->CONFSEED) && isset($CFG->CONFSEED->version)) ? $CFG->CONFSEED->version : '2017110700';
+$plugin->version   = (isset($CFG->CONFSEED) && isset($CFG->CONFSEED->version)) ? $CFG->CONFSEED->version : '2017121900';
 $plugin->requires  = 2017051502; // Requires Moodle 3.3.
 $plugin->component = 'local_confseed';
 $plugin->maturity = MATURITY_BETA;

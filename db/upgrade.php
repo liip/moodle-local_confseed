@@ -28,6 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/user/profile/definelib.php');
 require_once($CFG->dirroot . '/user/profile/lib.php');
+require_once($CFG->dirroot . '/lib/datalib.php');
 
 /**
  * Function launched when local_confseed upgrades.
@@ -106,6 +107,50 @@ function xmldb_local_confseed_upgrade($oldversion) {
             }
         }
         profile_reorder_fields();
+    }
+
+    // Make sure certain modules (activities) are made _hidden_ or _shown_.
+    $updated_course_modules = false;
+    if (isset($CFG->CONFSEED->mod_show)) {
+        foreach ($CFG->CONFSEED->mod_show as $modname) {
+            if ($module = $DB->get_record("modules", array("name" => $modname))) {
+                $DB->set_field("modules", "visible", "1", array("id" => $module->id));
+                $DB->set_field('course_modules', 'visible', '1', array('visibleold' => 1, 'module' => $module->id)); // Get the previous saved visible state for the course module.
+                // Increment course.cacherev for courses where we just made something visible.
+                // This will force cache rebuilding on the next request.
+                increment_revision_number('course', 'cacherev',
+                        "id IN (SELECT DISTINCT course
+                                        FROM {course_modules}
+                                       WHERE visible=1 AND module=?)",
+                        array($module->id));
+
+                $updated_course_modules = true;
+            }
+        }
+    }
+    if (isset($CFG->CONFSEED->mod_hide)) {
+        foreach ($CFG->CONFSEED->mod_hide as $modname) {
+            if ($module = $DB->get_record("modules", array("name" => $modname))) {
+                $DB->set_field("modules", "visible", "0", array("id" => $module->id));
+                // Remember the visibility status in visibleold
+                // and hide...
+                $sql = "UPDATE {course_modules}
+                           SET visibleold = visible, visible = 0
+                         WHERE module = ?";
+                $DB->execute($sql, array($module->id));
+                // Increment course.cacherev for courses where we just made something invisible.
+                // This will force cache rebuilding on the next request.
+                increment_revision_number('course', 'cacherev',
+                        "id IN (SELECT DISTINCT course
+                                        FROM {course_modules}
+                                       WHERE visibleold = 1 AND module=?)",
+                        array($module->id));
+                $updated_course_modules = true;
+            }
+        }
+    }
+    if ($updated_course_modules) {
+        core_plugin_manager::reset_caches();
     }
 
     // Make sure certain auth plugins are _disabled_ or _enabled_.
