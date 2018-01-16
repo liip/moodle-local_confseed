@@ -38,11 +38,17 @@ require_once($CFG->dirroot . '/lib/datalib.php');
 function xmldb_local_confseed_upgrade($oldversion) {
     global $CFG, $DB;
 
-    if (!isset($CFG->CONFSEED)) {
-        // The $CFG->CONFSEED attribute is not set, local/confseed doesn't do anything.
-        return true;
+    if (file_exists($CFG->dirroot . '/config-seed.php')) {
+        require_once($CFG->dirroot . '/config-seed.php');
     }
-    $CONFSEED = $CFG->CONFSEED;
+    if (!isset($CONFSEED)) {
+        if (isset($CFG->CONFSEED)) {
+            $CONFSEED = $CFG->CONFSEED;
+        } else {
+            // The CONFSEED attribute is not set, local/confseed doesn't do anything.
+            return true;
+        }
+    }
 
     // Holds the codename-to-ID map.
     $categorycodemap = array();

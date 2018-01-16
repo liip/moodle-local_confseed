@@ -4,7 +4,7 @@ This plugin allows the automated setup of various configurations that are usuall
 
 # Syntax
 
-It uses a special attribute within the `$CFG` configuration variable: `$CFG->CONFSEED`, which is a `stdClass` in which attributes can be set to be enforced at upgrade time:
+It uses a special file `config-seed.php` containing only the `$CONFSEED` configuration variable, which is a `stdClass` in which attributes can be set to be enforced at upgrade time:
 
 * `version` This will be used as the `local/confseed` plugin version. Only changes to that field will trigger new configuration enforcements.
 * `settings` is an `array` whose keys are the `$CFG->` settings that need to be set to the provided values
@@ -22,16 +22,16 @@ It uses a special attribute within the `$CFG` configuration variable: `$CFG->CON
 * `enrol_disable` is an `array` of enrolment plugins (without `enrol/` nor `enrol_` prefixes) that need to be forcibly *disabled*
 
 
-# `config.php` example
+# `config-seed.php` example
 ```php
-$CFG->CONFSEED = new stdClass();
-$CFG->CONFSEED->version = 2017110800;
+$CONFSEED = new stdClass();
+$CONFSEED->version = 2017110800;
 // Set some values.
-$CFG->CONFSEED->settings = array(
+$CONFSEED->settings = array(
   'theme' => 'boost',
 );
 // Create user profile categories.
-$CFG->CONFSEED->user_info_categories = array(
+$CONFSEED->user_info_categories = array(
   'food' => (object) array(
     'id' => 1,
     'name' => 'Alimentary restrictions',
@@ -40,7 +40,7 @@ $CFG->CONFSEED->user_info_categories = array(
 );
 
 // Create user profile fields.
-$CFG->CONFSEED->user_info_fields = array(
+$CONFSEED->user_info_fields = array(
   'meat' => (object) array(
     'category' => 'food',
     'name' => 'I eat meat',
@@ -59,14 +59,14 @@ $CFG->CONFSEED->user_info_fields = array(
   ),
 );
 // Enable or disable certain authentications.
-$CFG->CONFSEED->auth_enable = ['cas', ];
-$CFG->CONFSEED->auth_disable = ['email', ];
+$CONFSEED->auth_enable = ['cas', ];
+$CONFSEED->auth_disable = ['email', ];
 // Enable or disable certain enrolment methods.
-$CFG->CONFSEED->enrol_enable = ['database', ];
-$CFG->CONFSEED->enrol_disable = ['self', ];
+$CONFSEED->enrol_enable = ['database', ];
+$CONFSEED->enrol_disable = ['self', ];
 // Show or hide certain activity modules.
-$CFG->CONFSEED->mod_show = ['assignment', ];
-$CFG->CONFSEED->mod_hide = ['book', ];
+$CONFSEED->mod_show = ['assignment', ];
+$CONFSEED->mod_hide = ['book', ];
 ```
 
 # Limitations
