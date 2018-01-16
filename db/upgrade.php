@@ -182,6 +182,17 @@ function xmldb_local_confseed_upgrade($oldversion) {
     }
     set_config('enrol_plugins_enabled', implode(',', $enrols));
 
+    // Make sure certain webservices protocols are _disabled_ or _enabled_.
+    // Do not touch those that aren't in either.
+    $wsprotocols = explode(',', get_config('core', 'webserviceprotocols'));
+    if (isset($CONFSEED->wsprotocols_enable)) {
+        $wsprotocols = array_merge($wsprotocols, (array) $CONFSEED->wsprotocols_enable);
+    }
+    if (isset($CONFSEED->wsprotocols_disable)) {
+        $wsprotocols = array_diff($wsprotocols, (array) $CONFSEED->wsprotocols_disable);
+    }
+    set_config('webserviceprotocols', implode(',', $wsprotocols));
+
     // Forcibly set some settings.
     if (isset($CONFSEED->settings) ) {
         foreach ($CONFSEED->settings as $key => $value) {

@@ -29,6 +29,7 @@ $CONFSEED->version = 2017110800;
 // Set some values.
 $CONFSEED->settings = array(
   'theme' => 'boost',
+  'enablewebservices' => 1,
 );
 // Create user profile categories.
 $CONFSEED->user_info_categories = array(
@@ -67,6 +68,9 @@ $CONFSEED->enrol_disable = ['self', ];
 // Show or hide certain activity modules.
 $CONFSEED->mod_show = ['assignment', ];
 $CONFSEED->mod_hide = ['book', ];
+// Enable or disable certain webservices protocols.
+$CONFSEED->wsprotocols_enable = ['rest', ];
+$CONFSEED->wsprotocols_disable = ['soap', ];
 ```
 
 # Limitations
