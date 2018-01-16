@@ -42,14 +42,15 @@ function xmldb_local_confseed_upgrade($oldversion) {
         // The $CFG->CONFSEED attribute is not set, local/confseed doesn't do anything.
         return true;
     }
+    $CONFSEED = $CFG->CONFSEED;
 
     // Holds the codename-to-ID map.
     $categorycodemap = array();
 
     // Create or update user profile categories.
-    if (isset($CFG->CONFSEED->user_info_categories)) {
+    if (isset($CONFSEED->user_info_categories)) {
         $catsortorder = 1; // Start at 2, as the default one has 1.
-        foreach ($CFG->CONFSEED->user_info_categories as $codename => $newcategory) {
+        foreach ($CONFSEED->user_info_categories as $codename => $newcategory) {
             if (!isset($newcategory->id) ||
                 !isset($newcategory->name)) {
                 continue;
@@ -73,9 +74,9 @@ function xmldb_local_confseed_upgrade($oldversion) {
     }
 
     // Create or update user profile fields.
-    if (isset($CFG->CONFSEED->user_info_fields)) {
+    if (isset($CONFSEED->user_info_fields)) {
         $fieldsortorder = 1; // Start at 2, as the default one has 1.
-        foreach ($CFG->CONFSEED->user_info_fields as $shortname => $newfield) {
+        foreach ($CONFSEED->user_info_fields as $shortname => $newfield) {
             if (!isset($newfield->name) ||
                 !isset($newfield->datatype)) {
                 continue;
@@ -111,8 +112,8 @@ function xmldb_local_confseed_upgrade($oldversion) {
 
     // Make sure certain modules (activities) are made _hidden_ or _shown_.
     $updated_course_modules = false;
-    if (isset($CFG->CONFSEED->mod_show)) {
-        foreach ($CFG->CONFSEED->mod_show as $modname) {
+    if (isset($CONFSEED->mod_show)) {
+        foreach ($CONFSEED->mod_show as $modname) {
             if ($module = $DB->get_record("modules", array("name" => $modname))) {
                 $DB->set_field("modules", "visible", "1", array("id" => $module->id));
                 $DB->set_field('course_modules', 'visible', '1', array('visibleold' => 1, 'module' => $module->id)); // Get the previous saved visible state for the course module.
@@ -128,8 +129,8 @@ function xmldb_local_confseed_upgrade($oldversion) {
             }
         }
     }
-    if (isset($CFG->CONFSEED->mod_hide)) {
-        foreach ($CFG->CONFSEED->mod_hide as $modname) {
+    if (isset($CONFSEED->mod_hide)) {
+        foreach ($CONFSEED->mod_hide as $modname) {
             if ($module = $DB->get_record("modules", array("name" => $modname))) {
                 $DB->set_field("modules", "visible", "0", array("id" => $module->id));
                 // Remember the visibility status in visibleold
@@ -156,28 +157,28 @@ function xmldb_local_confseed_upgrade($oldversion) {
     // Make sure certain auth plugins are _disabled_ or _enabled_.
     // Do not touch those that aren't in either.
     $auths = explode(',', get_config('core', 'auth'));
-    if (isset($CFG->CONFSEED->auth_enable)) {
-        $auths = array_merge($auths, (array) $CFG->CONFSEED->auth_enable);
+    if (isset($CONFSEED->auth_enable)) {
+        $auths = array_merge($auths, (array) $CONFSEED->auth_enable);
     }
-    if (isset($CFG->CONFSEED->auth_disable)) {
-        $auths = array_diff($auths, (array) $CFG->CONFSEED->auth_disable);
+    if (isset($CONFSEED->auth_disable)) {
+        $auths = array_diff($auths, (array) $CONFSEED->auth_disable);
     }
     set_config('auth', implode(',', $auths));
 
     // Make sure certain enrol plugins are _disabled_ or _enabled_.
     // Do not touch those that aren't in either.
     $enrols = explode(',', get_config('core', 'enrol_plugins_enabled'));
-    if (isset($CFG->CONFSEED->enrol_enable)) {
-        $enrols = array_merge($enrols, (array) $CFG->CONFSEED->enrol_enable);
+    if (isset($CONFSEED->enrol_enable)) {
+        $enrols = array_merge($enrols, (array) $CONFSEED->enrol_enable);
     }
-    if (isset($CFG->CONFSEED->enrol_disable)) {
-        $enrols = array_diff($enrols, (array) $CFG->CONFSEED->enrol_disable);
+    if (isset($CONFSEED->enrol_disable)) {
+        $enrols = array_diff($enrols, (array) $CONFSEED->enrol_disable);
     }
     set_config('enrol_plugins_enabled', implode(',', $enrols));
 
     // Forcibly set some settings.
-    if (isset($CFG->CONFSEED->settings) ) {
-        foreach ($CFG->CONFSEED->settings as $key => $value) {
+    if (isset($CONFSEED->settings) ) {
+        foreach ($CONFSEED->settings as $key => $value) {
             set_config($key, $value);
         }
     }
