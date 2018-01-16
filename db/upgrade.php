@@ -39,7 +39,7 @@ function xmldb_local_confseed_upgrade($oldversion) {
     global $CFG, $DB;
 
     if (file_exists($CFG->dirroot . '/config-seed.php')) {
-        require_once($CFG->dirroot . '/config-seed.php');
+        include($CFG->dirroot . '/config-seed.php');
     }
     if (!isset($CONFSEED)) {
         if (isset($CFG->CONFSEED)) {
