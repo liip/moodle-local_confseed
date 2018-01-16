@@ -29,17 +29,19 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 
 if (file_exists($CFG->dirroot . '/config-seed.php')) {
-    require_once($CFG->dirroot . '/config-seed.php');
-    if (isset($CONFSEED) && isset($CCONFSEED->version)) {
+    include($CFG->dirroot . '/config-seed.php');
+    if (isset($CONFSEED) && isset($CONFSEED->version)) {
         $plugin->version = $CONFSEED->version;
     }
 }
 
 // Legacy CONFSEED setup.
-if (!isset($plugin->version) && isset($CFG->CONFSEED) && isset($CFG->CONFSEED->version)) {
-    $plugin->version = $CFG->CONFSEED->version;
-} else {
-    $plugin->version = '2017121900';
+if (!isset($plugin->version)) {
+    if (isset($CFG->CONFSEED) && isset($CFG->CONFSEED->version)) {
+        $plugin->version = $CFG->CONFSEED->version;
+    } else {
+        $plugin->version = '2017011600';
+    }
 }
 
 $plugin->requires  = 2017051502; // Requires Moodle 3.3.
