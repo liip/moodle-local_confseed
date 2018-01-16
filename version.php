@@ -26,6 +26,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+global $CFG;
+
 if (file_exists($CFG->dirroot . '/config-seed.php')) {
     require_once($CFG->dirroot . '/config-seed.php');
     if (isset($CONFSEED) && isset($CCONFSEED->version)) {
