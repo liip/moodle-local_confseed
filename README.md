@@ -31,6 +31,12 @@ $CONFSEED->settings = array(
   'theme' => 'boost',
   'enablewebservices' => 1,
 );
+// Set some plugin values (like 'moodlecourse | format')
+$CONFSEED->plugin_settings = array(
+  'moodlecourse' => array (
+    'format' => 'weeks'
+  )
+);
 // Create user profile categories.
 $CONFSEED->user_info_categories = array(
   'food' => (object) array(

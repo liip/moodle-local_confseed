@@ -200,6 +200,15 @@ function xmldb_local_confseed_upgrade($oldversion) {
         }
     }
 
+    // Forcibly set some plugin settings.
+    if (isset($CONFSEED->plugin_settings)) {
+        foreach ($CONFSEED->plugin_settings as $plugin => $settings) {
+            foreach ($settings as $key => $value) {
+                set_config($key, $value, $plugin);
+            }
+        }
+    }
+
     // An upgrade_plugin_savepoint call is not needed here as upgradelib.php's upgrade_plugins() will do it for us.
     return true;
 }
