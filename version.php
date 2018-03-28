@@ -40,7 +40,7 @@ if (!isset($plugin->version)) {
     if (isset($CFG->CONFSEED) && isset($CFG->CONFSEED->version)) {
         $plugin->version = $CFG->CONFSEED->version;
     } else {
-        $plugin->version = '2018030600';
+        $plugin->version = '2018032800';
     }
 }
 

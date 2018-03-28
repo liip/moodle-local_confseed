@@ -50,6 +50,45 @@ function xmldb_local_confseed_upgrade($oldversion) {
         }
     }
 
+    // Start by uninstalling plugins.
+    if (isset($CONFSEED->uninstall_plugins)) {
+        $pre27themes = [
+           'afterburner',
+           'anomaly',
+           'arialist',
+           'binarius',
+           'boxxie',
+           'brick',
+           'formal_white',
+           'formfactor',
+           'fusion',
+           'leatherbound',
+           'magazine',
+           'nimble',
+           'nonzero',
+           'overlay',
+           'serenity',
+           'sky_high',
+           'splash',
+           'standard',
+           'standardold',
+        ];
+
+        array_walk($pre27themes, function(&$t) { $t = 'theme_' . $t; });
+        $CONFSEED->uninstall_plugins = array_merge($CONFSEED->uninstall_plugins, $pre27themes);
+
+        $pluginman = core_plugin_manager::instance();
+        $progress = new progress_trace_buffer(new text_progress_trace(), false);
+
+        foreach ($CONFSEED->uninstall_plugins as $pluginname) {
+            $pluginfo = $pluginman->get_plugin_info($pluginname);
+            if (!is_null($pluginfo)) {
+              $pluginman->uninstall_plugin($pluginfo->component, $progress);
+            }
+        }
+        $progress->finished();
+    }
+
     // Holds the codename-to-ID map.
     $categorycodemap = array();
 
