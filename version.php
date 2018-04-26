@@ -43,7 +43,7 @@ if (!isset($plugin->version)) {
     }
 }
 
-$plugin->requires  = 2017051502; // Requires Moodle 3.3.
+$plugin->requires  = 2016052311; // Requires Moodle 3.1.
 $plugin->component = 'local_confseed';
 $plugin->maturity = MATURITY_BETA;
 $plugin->release = 0.1;
