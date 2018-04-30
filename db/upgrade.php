@@ -82,7 +82,7 @@ function xmldb_local_confseed_upgrade($oldversion) {
         foreach ($CONFSEED->uninstall_plugins as $pluginname) {
             $pluginfo = $pluginman->get_plugin_info($pluginname);
             if (!is_null($pluginfo)) {
-              $pluginman->uninstall_plugin($pluginfo->component, $progress);
+                $pluginman->uninstall_plugin($pluginfo->component, $progress);
             }
         }
         $progress->finished();
@@ -155,13 +155,14 @@ function xmldb_local_confseed_upgrade($oldversion) {
     }
 
     // Make sure certain modules (activities) are made _hidden_ or _shown_.
-    $updated_course_modules = false;
+    $updatedcoursemodules = false;
     if (isset($CONFSEED->mod_show)) {
         foreach ($CONFSEED->mod_show as $modname) {
             if ($module = $DB->get_record("modules", array("name" => $modname))) {
                 $DB->set_field("modules", "visible", "1", array("id" => $module->id));
                 $DB->set_field('course_modules', 'visible', '1', array('visibleold' => 1, 'module' => $module->id)); // Get the previous saved visible state for the course module.
-                // Increment course.cacherev for courses where we just made something visible.
+                // Increment course.cacherev for courses where we just made something
+                // visible.
                 // This will force cache rebuilding on the next request.
                 increment_revision_number('course', 'cacherev',
                         "id IN (SELECT DISTINCT course
@@ -169,7 +170,7 @@ function xmldb_local_confseed_upgrade($oldversion) {
                                        WHERE visible=1 AND module=?)",
                         array($module->id));
 
-                $updated_course_modules = true;
+                $updatedcoursemodules = true;
             }
         }
     }
@@ -190,11 +191,11 @@ function xmldb_local_confseed_upgrade($oldversion) {
                                         FROM {course_modules}
                                        WHERE visibleold = 1 AND module=?)",
                         array($module->id));
-                $updated_course_modules = true;
+                $updatedcoursemodules = true;
             }
         }
     }
-    if ($updated_course_modules) {
+    if ($updatedcoursemodules) {
         core_plugin_manager::reset_caches();
     }
 
