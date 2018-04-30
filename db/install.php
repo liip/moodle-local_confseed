@@ -17,8 +17,7 @@
 /**
  * Configuration Seeder upgrade script (run when version.php's version changes)
  *
- * @package local
- * @subpackage confseed
+ * @package local_confseed
  * @copyright Liip AG <https://www.liip.ch/>
  * @author Didier Raboud <didier.raboud@liip.ch>
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
