@@ -160,7 +160,10 @@ function xmldb_local_confseed_upgrade($oldversion) {
         foreach ($CONFSEED->mod_show as $modname) {
             if ($module = $DB->get_record("modules", array("name" => $modname))) {
                 $DB->set_field("modules", "visible", "1", array("id" => $module->id));
-                $DB->set_field('course_modules', 'visible', '1', array('visibleold' => 1, 'module' => $module->id)); // Get the previous saved visible state for the course module.
+                // Get the previous saved visible state for the course module.
+                $DB->set_field('course_modules', 'visible', '1',
+                    array('visibleold' => 1, 'module' => $module->id)
+                );
                 // Increment course.cacherev for courses where we just made something
                 // visible.
                 // This will force cache rebuilding on the next request.
