@@ -49,8 +49,9 @@ function xmldb_local_confseed_upgrade($oldversion) {
         }
     }
 
-    // Start by uninstalling plugins.
-    if (isset($CONFSEED->uninstall_plugins)) {
+    // Start by uninstalling plugins, only if moodle is installed.
+    $dbman = $DB->get_manager();
+    if ($dbman->table_exists('config_plugins') and isset($CONFSEED->uninstall_plugins)) {
         $pre27themes = [
            'afterburner',
            'anomaly',
