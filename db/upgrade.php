@@ -36,6 +36,7 @@ require_once($CFG->dirroot . '/lib/datalib.php');
  */
 function xmldb_local_confseed_upgrade($oldversion) {
     global $CFG, $DB;
+    $dbman = $DB->get_manager();
 
     if (file_exists($CFG->dirroot . '/config-seed.php')) {
         include($CFG->dirroot . '/config-seed.php');
@@ -50,7 +51,6 @@ function xmldb_local_confseed_upgrade($oldversion) {
     }
 
     // Start by uninstalling plugins, only if moodle is installed.
-    $dbman = $DB->get_manager();
     if ($dbman->table_exists('config_plugins') and isset($CONFSEED->uninstall_plugins)) {
         $pre27themes = [
            'afterburner',
@@ -243,8 +243,8 @@ function xmldb_local_confseed_upgrade($oldversion) {
         }
     }
 
-    // Forcibly set some plugin settings.
-    if (isset($CONFSEED->plugin_settings)) {
+    // Forcibly set some plugin settings, only if moodle is installed.
+    if ($dbman->table_exists('config_plugins') and isset($CONFSEED->plugin_settings)) {
         foreach ($CONFSEED->plugin_settings as $plugin => $settings) {
             foreach ($settings as $key => $value) {
                 set_config($key, $value, $plugin);
