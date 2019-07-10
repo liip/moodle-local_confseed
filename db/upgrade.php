@@ -28,6 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/user/profile/definelib.php');
 require_once($CFG->dirroot . '/user/profile/lib.php');
 require_once($CFG->dirroot . '/lib/datalib.php');
+require_once($CFG->dirroot . '/lib/filterlib.php');
 
 /**
  * Function launched when local_confseed upgrades.
@@ -249,6 +250,13 @@ function xmldb_local_confseed_upgrade($oldversion) {
             foreach ($settings as $key => $value) {
                 set_config($key, $value, $plugin);
             }
+        }
+    }
+
+    // Activate/Deactivate a Filter plugin by default.
+    if (isset($CONFSEED->filter_activation)) {
+        foreach ($CONFSEED->filter_activation as $plugin => $setting) {
+            filter_set_global_state($plugin, $setting);
         }
     }
 
