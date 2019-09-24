@@ -43,12 +43,8 @@ function xmldb_local_confseed_upgrade($oldversion) {
         include($CFG->dirroot . '/config-seed.php');
     }
     if (!isset($CONFSEED)) {
-        if (isset($CFG->CONFSEED)) {
-            $CONFSEED = $CFG->CONFSEED;
-        } else {
-            // The CONFSEED attribute is not set, local/confseed doesn't do anything.
-            return true;
-        }
+        // The CONFSEED attribute is not set, local/confseed doesn't do anything.
+        return true;
     }
 
     // Start by uninstalling plugins, only if moodle is installed.

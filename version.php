@@ -33,16 +33,6 @@ if (file_exists($CFG->dirroot . '/config-seed.php')) {
         $plugin->version = $CONFSEED->version;
     }
 }
-
-// Legacy CONFSEED setup.
-if (!isset($plugin->version)) {
-    if (isset($CFG->CONFSEED) && isset($CFG->CONFSEED->version)) {
-        $plugin->version = $CFG->CONFSEED->version;
-    } else {
-        $plugin->version = '2018043000';
-    }
-}
-
 // The rolesactive = 1 marks a finished Moodle install.
 if ($CFG->rolesactive != 1) {
     // Pretend it's a one-off lower version, so we can install+upgrade in one step.
