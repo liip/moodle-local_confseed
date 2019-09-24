@@ -30,7 +30,7 @@ defined('MOODLE_INTERNAL') || die();
  * @return bool result
  */
 function xmldb_local_confseed_install() {
-    global $CFG, $DB;
+    global $CFG;
 
     // We always want to run the upgrade.
     require_once($CFG->dirroot . '/local/confseed/db/upgrade.php');
