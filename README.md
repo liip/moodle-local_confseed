@@ -27,10 +27,11 @@ It uses a special file `config-seed.php` containing only the `$CONFSEED` configu
 
 # `config-seed.php` example
 ```php
+<?php
 $CONFSEED = new stdClass();
 $CONFSEED->version = 2017110800;
 // Set some values.
-$CONFSEED->languages = ['de', 'fr');
+$CONFSEED->languages = ['de', 'fr'];
 $CONFSEED->settings = [
   'theme' => 'boost',
   'enablewebservices' => 1,
