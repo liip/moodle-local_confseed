@@ -27,16 +27,19 @@ defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
 
+// local_confseed version.
+$plugin->version = '2018043000';
+
 if (file_exists($CFG->dirroot . '/config-seed.php')) {
     include($CFG->dirroot . '/config-seed.php');
     if (isset($CONFSEED) && isset($CONFSEED->version)) {
         $plugin->version = $CONFSEED->version;
+        // The rolesactive = 1 marks a finished Moodle install.
+        if ($CFG->rolesactive != 1) {
+            // Pretend it's a one-off lower version, so we can install+upgrade in one step.
+            $plugin->version = (string)((int)$plugin->version - 1);
+        }
     }
-}
-// The rolesactive = 1 marks a finished Moodle install.
-if ($CFG->rolesactive != 1) {
-    // Pretend it's a one-off lower version, so we can install+upgrade in one step.
-    $plugin->version = (string)((int)$plugin->version - 1);
 }
 
 $plugin->requires  = 2017051502; // Requires Moodle 3.3.
