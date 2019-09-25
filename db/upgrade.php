@@ -256,6 +256,15 @@ function xmldb_local_confseed_upgrade($oldversion) {
         }
     }
 
+    // Install language packs.
+    if (isset($CONFSEED->languages) && is_array($CONFSEED->languages)) {
+        get_string_manager()->reset_caches();
+        $controller = new tool_langimport\controller();
+        core_php_time_limit::raise();
+        $controller->install_languagepacks($CONFSEED->languages);
+        get_string_manager()->reset_caches();
+    }
+
     // An upgrade_plugin_savepoint call is not needed here as upgradelib.php's upgrade_plugins() will do it for us.
     return true;
 }

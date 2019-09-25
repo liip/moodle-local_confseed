@@ -22,6 +22,7 @@ It uses a special file `config-seed.php` containing only the `$CONFSEED` configu
 * `enrol_disable` is an `array` of enrolment plugins (without `enrol/` nor `enrol_` prefixes) that need to be forcibly *disabled*
 * `uninstall_plugins` is an `array` of full plugin names (such as `theme_oldmamma`) to be uninstalled. If set, all pre-2.7 themes are also uninstalled
 * `filter_activation` is an `array` of plugin names (such as `geshi`) to be *activated/deactivated*.
+* `languages` is an `array` of short language names (such as `'de'`, `'fr'`) that will be installed.
 
 
 # `config-seed.php` example
@@ -29,6 +30,7 @@ It uses a special file `config-seed.php` containing only the `$CONFSEED` configu
 $CONFSEED = new stdClass();
 $CONFSEED->version = 2017110800;
 // Set some values.
+$CONFSEED->languages = array('de', 'fr');
 $CONFSEED->settings = array(
   'theme' => 'boost',
   'enablewebservices' => 1,
