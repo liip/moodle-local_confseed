@@ -94,6 +94,8 @@ $CONFSEED->filter_activation = [
 ];
 ```
 
-# Limitations
+# Limitations in Moodle initial installation
 
-Due to Moodle Core forcibly setting the `registerauth` setting upon install, it is not possible for `local_confseed` to seed this variable upon install. It does work upon upgrade though.
+Due to Moodle forcibly setting default settings for all plugins as well as some variables such as `registerauth` during an initial installation; `local_confseed` sets itself a lower version upon install, in order to trigger upon upgrade immediately after.
+
+In other words: upon a Moodle initial installation, `local_confseed` will not have run, so *a Moodle upgrade is needed for `local_confseed` to work*.
