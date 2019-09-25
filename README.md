@@ -30,49 +30,49 @@ It uses a special file `config-seed.php` containing only the `$CONFSEED` configu
 $CONFSEED = new stdClass();
 $CONFSEED->version = 2017110800;
 // Set some values.
-$CONFSEED->languages = array('de', 'fr');
-$CONFSEED->settings = array(
+$CONFSEED->languages = ['de', 'fr');
+$CONFSEED->settings = [
   'theme' => 'boost',
   'enablewebservices' => 1,
-);
+];
 // Set some plugin values (like 'moodlecourse | format')
-$CONFSEED->plugin_settings = array(
-  'moodlecourse' => array (
+$CONFSEED->plugin_settings = [
+  'moodlecourse' => [
     'format' => 'weeks'
-  )
-);
+  ]
+];
 // Uninstall certain plugins; all the pre-2.7 themes are uninstalled forcibly if the variable is set.
-$CONFSEED->uninstall_plugins = array(
+$CONFSEED->uninstall_plugins = [
     'theme_oldmamma',
-);
+];
 // Create user profile categories.
-$CONFSEED->user_info_categories = array(
-  'food' => (object) array(
+$CONFSEED->user_info_categories = [
+  'food' => (object) [
     'id' => 1,
     'name' => 'Alimentary restrictions',
     'sortorder' => 1,
-  ),
-);
+  ],
+];
 
 // Create user profile fields.
-$CONFSEED->user_info_fields = array(
-  'meat' => (object) array(
+$CONFSEED->user_info_fields = [
+  'meat' => (object) [
     'category' => 'food',
     'name' => 'I eat meat',
     'required' => false,
     'signup' => true,
     'datatype' => 'checkbox',
     'defaultdata' => false
-  ),
-  'freetext' => (object) array(
+  ],
+  'freetext' => (object) [
     'category' => 'food',
     'name' => 'Comments …',
     'signup' => true,
     'datatype' => 'text',
     'param1' => 60, // Display size.
     'param2' => 512, // Maximum length.
-  ),
-);
+  ],
+];
 // Enable or disable certain authentications.
 $CONFSEED->auth_enable = ['cas', ];
 $CONFSEED->auth_disable = ['email', ];
@@ -91,7 +91,6 @@ $CONFSEED->filter_activation = [
     'geshi' => '1',
     'algebra' => '0'
 ];
-
 ```
 
 # Limitations
