@@ -8,6 +8,7 @@ It uses a special file `config-seed.php` containing only the `$CONFSEED` configu
 
 * `version` This will be used as the `local/confseed` plugin version. Only changes to that field will trigger new configuration enforcements.
 * `settings` is an `array` whose keys are the `$CFG->` settings that need to be set to the provided values
+* `plugin_settings` is an `array` whose keys are the plugin sections; the sub arrays are key-value pairs written into the plugin tables. If the value is an existing file, it gets uploaded to said section.
 * `user_info_categories` is an `array` of `stdClass` `$DB` descriptors for the `{user_info_category}` database table, *which keys are codename for the below `user_info_fields`*.
  * Mandatory fields:
   * `id`
@@ -36,10 +37,13 @@ $CONFSEED->settings = [
   'theme' => 'boost',
   'enablewebservices' => 1,
 ];
-// Set some plugin values (like 'moodlecourse | format')
+// Set some plugin values (like 'moodlecourse | format'), or upload certain files.
 $CONFSEED->plugin_settings = [
   'moodlecourse' => [
-    'format' => 'weeks'
+    'format' => 'weeks',
+  ],
+  'core_admin' => [
+    'logo' => 'local/logo.png'
   ]
 ];
 // Uninstall certain plugins; all the pre-2.7 themes are uninstalled forcibly if the variable is set.

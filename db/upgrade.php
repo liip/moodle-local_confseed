@@ -29,6 +29,8 @@ require_once($CFG->dirroot . '/user/profile/definelib.php');
 require_once($CFG->dirroot . '/user/profile/lib.php');
 require_once($CFG->dirroot . '/lib/datalib.php');
 require_once($CFG->dirroot . '/lib/filterlib.php');
+require_once($CFG->dirroot . '/lib/outputlib.php');
+require_once($CFG->dirroot . '/local/confseed/locallib.php');
 
 /**
  * Function launched when local_confseed upgrades.
@@ -244,7 +246,10 @@ function xmldb_local_confseed_upgrade($oldversion) {
     if ($dbman->table_exists('config_plugins') and isset($CONFSEED->plugin_settings)) {
         foreach ($CONFSEED->plugin_settings as $plugin => $settings) {
             foreach ($settings as $key => $value) {
-                set_config($key, $value, $plugin);
+                // Try to upload the file anyway; if that fails, set the config.
+                if (local_confseed_admin_settings_set_file($plugin, $key, $value) === false) {
+                    set_config($key, $value, $plugin);
+                }
             }
         }
     }
