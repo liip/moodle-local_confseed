@@ -22,7 +22,7 @@ It uses a special file `config-seed.php` containing only the `$CONFSEED` configu
 * `enrol_enable` is an `array` of enrolment plugins (without `enrol/` nor `enrolq_` prefixes) that need to be forcibly *enabled*
 * `enrol_disable` is an `array` of enrolment plugins (without `enrol/` nor `enrol_` prefixes) that need to be forcibly *disabled*
 * `uninstall_plugins` is an `array` of full plugin names (such as `theme_oldmamma`) to be uninstalled. If set, all pre-2.7 themes are also uninstalled
-* `filter_activation` is an `array` of plugin names (such as `geshi`) to be *activated/deactivated*.
+* `filter_activation` is an `array` of plugin names (such as `geshi`) to be *activated/deactivated*; the values must be -1 or 1 integers.
 * `languages` is an `array` of short language names (such as `'de'`, `'fr'`) that will be installed.
 
 
@@ -93,8 +93,8 @@ $CONFSEED->wsprotocols_disable = ['soap', ];
 
 // Activate/Deactivate a Filter plugin by default.
 $CONFSEED->filter_activation = [
-    'geshi' => '1',
-    'algebra' => '0'
+    'geshi' => 1,
+    'algebra' => -1
 ];
 ```
 
