@@ -30,7 +30,7 @@ It uses a special file `config-seed.php` containing only the `$CONFSEED` configu
 ```php
 <?php
 $CONFSEED = new stdClass();
-$CONFSEED->version = 2017110800;
+$CONFSEED->version = 2020060800;
 // Set some values.
 $CONFSEED->languages = ['de', 'fr'];
 $CONFSEED->settings = [

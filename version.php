@@ -44,5 +44,5 @@ if (file_exists($CFG->dirroot . '/config-seed.php')) {
 
 $plugin->requires  = 2017051502; // Requires Moodle 3.3.
 $plugin->component = 'local_confseed';
-$plugin->maturity = MATURITY_BETA;
-$plugin->release = 0.1;
+$plugin->maturity = MATURITY_STABLE;
+$plugin->release = 0.2;
